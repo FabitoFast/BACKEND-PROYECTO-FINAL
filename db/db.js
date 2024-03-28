@@ -1,4 +1,4 @@
-//MIDLEWARE PROPIO//
+//CONEXION A BASE DE DATOS//
 
 const mongoose = require('mongoose');
 require('dotenv').config();
