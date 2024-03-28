@@ -1,29 +1,34 @@
-const {User} = require("../models/users");
+//importar el esquema que esta en models/componente
 
-const controllers = {
-    myIndex(req, res)  {
-        res.render("index", { title: "Express" });
-},
-myUser(req, res)  {
-    res.json({
-        name: "Juan",
-        age: 25 
-    })
-},
-newUser: async (req, res) => {
+const Componente = require("../models/Componente");
+
+const getComponents = async (req, res) => {
     try {
-        const user = new User(req.body);
-        await user.save();
-        res.status(201).json(user);
-        } catch (err) {
-        res.status(501).json(
-            {
-                msg: "Error al crear usuario, el email ya existe",
-                err,
-            }
-        );
+        const components = await Componente.find();
+        res.json(200).json({ components: components, msg:"ok" });
+    } catch (error) {
+        res.status(500).json({
+            component: null, 
+            msg: "error - " + error.message,
+        });
     }
-}
-}
+};
 
-module.exports = controllers;
+//crear un componente   
+const createComponent = async (req, res) => {
+    try {
+        const newComponent = await Componente(req.body);
+        await newComponent.save();
+        res.status(201).json({
+            component: newComponent, msg: "ok"
+        });
+    } catch (error) {
+        res.status(500).json({
+            component: null, 
+            msg: "error - " + error.message,
+        });
+    }
+};
+
+
+module.exports = { getComponents, createComponent};
